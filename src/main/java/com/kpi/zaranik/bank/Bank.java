@@ -3,6 +3,7 @@ package com.kpi.zaranik.bank;
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.Synchronized;
 
 public class Bank {
 
@@ -28,6 +29,16 @@ public class Bank {
 //    }
 
     public synchronized void transferSync(int from, int to, int amount) {
+        accounts[from] -= amount;
+        accounts[to] += amount;
+        nTransacts++;
+        if (nTransacts % NTEST == 0) {
+            test();
+        }
+    }
+
+    @Synchronized
+    public void transferSyncLombok(int from, int to, int amount) {
         accounts[from] -= amount;
         accounts[to] += amount;
         nTransacts++;
